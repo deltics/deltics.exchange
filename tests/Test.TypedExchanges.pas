@@ -161,8 +161,13 @@ implementation
 
     Exchange(a, b);
 
+{$ifdef EnhancedOverloads}
     Test('a').Assert(a).Equals(ob);
     Test('b').Assert(b).Equals(oa);
+{$else}
+    Test('a').AssertDatetime(a).Equals(ob);
+    Test('b').AssertDatetime(b).Equals(oa);
+{$endif}
   end;
 
 
