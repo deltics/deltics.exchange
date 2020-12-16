@@ -1,10 +1,10 @@
 {
-  "id":"deltics.exceptions",
+  "id":"deltics.exchange",
   "version":"",
-  "summary":"A tiny package that consolidates exceptions for consistency in packages targetting support for multiple versions of the Delphi compiler.",
+  "summary":"A tiny package that provides Exchange() routines for exchanging values between two variables with overloads for various, common types.",
   "tags":[
     "deltics",
-    "exceptions"
+    "exchange"
   ],
   "copyright":"\u00A92020 Jolyon Direnko-Smith",
   "language":"en",
@@ -14,8 +14,8 @@
   ],
   "source":{
       "files":[
-        "src\\deltics.exceptions.inc",
-        "src\\Deltics.Exceptions.pas"
+        "src\\deltics.exchange.inc",
+        "src\\Deltics.Exchange.pas"
       ]
     }
 }
