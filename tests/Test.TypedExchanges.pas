@@ -7,7 +7,8 @@
 interface
 
   uses
-    Deltics.Smoketest;
+    Deltics.Smoketest,
+    Deltics.StringTypes;
 
 
   type
@@ -21,11 +22,11 @@ interface
       procedure TestExchangeIntegersWithData(a, b: Integer);
       procedure TestExchangeInt64sWithData(a, b: Int64);
       procedure TestExchangeDatetimesWithData(a, b: TDatetime);
+      procedure TestExchangeAnsiStringsWithData(a, b: AnsiString);
       procedure TestExchangeStringsWithData(a, b: String);
       procedure TestExchangeWideStringsWithData(a, b: WideString);
-    {$ifdef UNICODE}
-      procedure TestExchangeAnsiStringsWithData(a, b: AnsiString);
-    {$endif}
+      procedure TestExchangeUnicodeStringsWithData(a, b: UnicodeString);
+      procedure TestExchangeUtf8StringsWithData(a, b: Utf8String);
 
     published
       procedure ExchangeBytesCorrectlyExchangesValues;
@@ -36,11 +37,11 @@ interface
       procedure ExchangeIntegersCorrectlyExchangesValues;
       procedure ExchangeInt64sCorrectlyExchangesValues;
       procedure ExchangeDatetimesCorrectlyExchangesValues;
-      procedure ExchangeStringsCorrectlyExchangesValues;
-      procedure ExchangeWideStringsCorrectlyExchangesValues;
-    {$ifdef UNICODE}
       procedure ExchangeAnsiStringsCorrectlyExchangesValues;
-    {$endif}
+      procedure ExchangeStringsCorrectlyExchangesValues;
+      procedure ExchangeUnicodeStringsCorrectlyExchangesValues;
+      procedure ExchangeUtf8StringsCorrectlyExchangesValues;
+      procedure ExchangeWideStringsCorrectlyExchangesValues;
     end;
 
 
@@ -187,6 +188,34 @@ implementation
   end;
 
 
+  procedure TTypedExchangeTests.TestExchangeUnicodeStringsWithData(a, b: UnicodeString);
+  var
+    oa, ob: UnicodeString;
+  begin
+    oa := a;
+    ob := b;
+
+    Exchange(a, b);
+
+    Test('a').Assert(a).Equals(ob);
+    Test('b').Assert(b).Equals(oa);
+  end;
+
+
+  procedure TTypedExchangeTests.TestExchangeUtf8StringsWithData(a, b: Utf8String);
+  var
+    oa, ob: Utf8String;
+  begin
+    oa := a;
+    ob := b;
+
+    ExchangeUtf8(a, b);
+
+    Test('a').AssertUtf8(a).Equals(ob);
+    Test('b').AssertUtf8(b).Equals(oa);
+  end;
+
+
   procedure TTypedExchangeTests.TestExchangeWideStringsWithData(a, b: WideString);
   var
     oa, ob: WideString;
@@ -201,7 +230,6 @@ implementation
   end;
 
 
-{$ifdef UNICODE}
   procedure TTypedExchangeTests.TestExchangeAnsiStringsWithData(a, b: AnsiString);
   var
     oa, ob: AnsiString;
@@ -214,7 +242,6 @@ implementation
     Test('a').Assert(a).Equals(ob);
     Test('b').Assert(b).Equals(oa);
   end;
-{$endif}
 
 
 { TTypedExchangeTests }
@@ -308,6 +335,23 @@ implementation
   end;
 
 
+  procedure TTypedExchangeTests.ExchangeUnicodeStringsCorrectlyExchangesValues;
+  begin
+    TestExchangeUnicodeStringsWithData(   '', 'foo');
+    TestExchangeUnicodeStringsWithData('foo', '');
+    TestExchangeUnicodeStringsWithData('foo', 'bar');
+  end;
+
+
+  procedure TTypedExchangeTests.ExchangeUtf8StringsCorrectlyExchangesValues;
+  begin
+    TestExchangeUtf8StringsWithData(   '', 'foo');
+    TestExchangeUtf8StringsWithData('foo', '');
+    TestExchangeUtf8StringsWithData('foo', 'bar');
+
+  end;
+
+
   procedure TTypedExchangeTests.ExchangeWideStringsCorrectlyExchangesValues;
   begin
     TestExchangeWideStringsWithData(   '', 'foo');
@@ -316,14 +360,16 @@ implementation
   end;
 
 
-{$ifdef UNICODE}
   procedure TTypedExchangeTests.ExchangeAnsiStringsCorrectlyExchangesValues;
   begin
     TestExchangeAnsiStringsWithData(   '', 'foo');
     TestExchangeAnsiStringsWithData('foo', '');
     TestExchangeAnsiStringsWithData('foo', 'bar');
   end;
-{$endif}
+
+
+
+
 
 
 end.

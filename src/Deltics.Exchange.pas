@@ -6,6 +6,9 @@
 
 interface
 
+  uses
+    Deltics.StringTypes;
+
 
   procedure Exchange(var A, B: Byte); overload;             {$ifdef InlineMethods} inline; {$endif}
   procedure Exchange(var A, B: Word); overload;             {$ifdef InlineMethods} inline; {$endif}
@@ -16,14 +19,19 @@ interface
   procedure Exchange(var A, B: Int64); overload;            {$ifdef InlineMethods} inline; {$endif}
 {$ifdef EnhancedOverloads}
   procedure Exchange(var A, B: TDateTime); overload;        {$ifdef InlineMethods} inline; {$endif}
-{$else}
-  procedure ExchangeDatetime(var A, B: TDateTime); overload;  {$ifdef InlineMethods} inline; {$endif}
 {$endif}
-  procedure Exchange(var A, B: String); overload;           {$ifdef InlineMethods} inline; {$endif}
-  procedure Exchange(var A, B: WideString); overload;       {$ifdef InlineMethods} inline; {$endif}
+  procedure Exchange(var A, B: AnsiChar); overload;         {$ifdef InlineMethods} inline; {$endif}
+  procedure Exchange(var A, B: AnsiString); overload;       {$ifdef InlineMethods} inline; {$endif}
+  procedure Exchange(var A, B: UnicodeString); overload;    {$ifdef InlineMethods} inline; {$endif}
+  procedure Exchange(var A, B: WideChar); overload;         {$ifdef InlineMethods} inline; {$endif}
+  procedure Exchange(var A, B: WideString); overload;       {$ifdef InlineMethods} inline; {$endif}
 {$ifdef UNICODE}
-  procedure Exchange(var A, B: AnsiString); overload;       {$ifdef InlineMethods} inline; {$endif}
+  procedure Exchange(var A, B: Utf8Char); overload;         {$ifdef InlineMethods} inline; {$endif}
+  procedure Exchange(var A, B: Utf8String); overload;       {$ifdef InlineMethods} inline; {$endif}
 {$endif}
+  procedure ExchangeDatetime(var A, B: TDateTime); overload;  {$ifdef InlineMethods} inline; {$endif}
+  procedure ExchangeUtf8(var A, B: Utf8Char); overload;       {$ifdef InlineMethods} inline; {$endif}
+  procedure ExchangeUtf8(var A, B: Utf8String); overload;     {$ifdef InlineMethods} inline; {$endif}
 
   procedure Exchange(var A, B; aSize: LongWord); overload;
 
@@ -94,14 +102,23 @@ implementation
   end;
 
 
-  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
 {$ifdef EnhancedOverloads}
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
   procedure Exchange(var A, B: TDateTime);
-{$else}
-  procedure ExchangeDatetime(var A, B: TDateTime);
-{$endif}
   var
     T: TDatetime;
+  begin
+    T := A;
+    A := B;
+    B := T;
+  end;
+{$endif}
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure Exchange(var A, B: AnsiChar);
+  var
+    T: AnsiChar;
   begin
     T := A;
     A := B;
@@ -110,9 +127,31 @@ implementation
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  procedure Exchange(var A, B: String);
+  procedure Exchange(var A, B: AnsiString);
   var
-    T: String;
+    T: AnsiString;
+  begin
+    T := A;
+    A := B;
+    B := T;
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure Exchange(var A, B: UnicodeString);
+  var
+    T: UnicodeString;
+  begin
+    T := A;
+    A := B;
+    B := T;
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure Exchange(var A, B: WideChar);
+  var
+    T: WideChar;
   begin
     T := A;
     A := B;
@@ -134,9 +173,20 @@ implementation
 {$ifdef UNICODE}
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
-  procedure Exchange(var A, B: AnsiString);
+  procedure Exchange(var A, B: Utf8Char);
   var
-    T: AnsiString;
+    T: Utf8Char;
+  begin
+    T := A;
+    A := B;
+    B := T;
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure Exchange(var A, B: Utf8String);
+  var
+    T: Utf8String;
   begin
     T := A;
     A := B;
@@ -145,6 +195,38 @@ implementation
 
 {$endif}
 
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure ExchangeDatetime(var A, B: TDateTime);
+  var
+    T: TDatetime;
+  begin
+    T := A;
+    A := B;
+    B := T;
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure ExchangeUtf8(var A, B: Utf8Char);
+  var
+    T: Utf8Char;
+  begin
+    T := A;
+    A := B;
+    B := T;
+  end;
+
+
+  { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
+  procedure ExchangeUtf8(var A, B: Utf8String);
+  var
+    T: Utf8String;
+  begin
+    T := A;
+    A := B;
+    B := T;
+  end;
 
 
   { - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - }
